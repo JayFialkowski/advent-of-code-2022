@@ -14,9 +14,6 @@ const stacks = crates.reduce((stack: string[][], curr: string) => {
     return stack
 }, [])
 
-console.log(stacks);
-
-
 commands
     .map((command: string) => command.match(/(\d+)/ig)?.map(num => Number.parseInt(num)))
     .forEach(([count, from, to]: number[]) => {

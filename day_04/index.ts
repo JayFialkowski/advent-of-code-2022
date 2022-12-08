@@ -10,9 +10,6 @@ const result = pairs
         const bUpper = Number.parseInt(pair[1].split('-')[1])
 
         return (aLower <=bLower && aUpper >= bLower) || (bLower <= aLower && bUpper >= aLower)
-
-        // console.log(aLower, aUpper, bLower, bUpper);
-        // return (aLower <= bLower && aUpper >= bUpper) || (bLower <= aLower && bUpper >= aUpper)
     })
 
 console.log(result.length);
