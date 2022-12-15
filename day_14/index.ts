@@ -13,9 +13,7 @@ input
     .map(row => row.split('->').map(c => c.trim()))
     .forEach((row: string[]) => {
         row.forEach((range, index) => {
-            if (index > 0) {
-                populateRange(row[index - 1], range)
-            }
+            if (index > 0) populateRange(row[index - 1], range)
         })
     })
 
@@ -28,9 +26,7 @@ function populateRange(lower, upper): void {
     maxY = Math.max(maxY, y1, y2)
 
     for (let i = Math.min(x1, x2); i <= Math.max(x1, x2); i++) {
-        if (!cave[i]) {
-            cave[i] = {};
-        }
+        if (!cave[i]) cave[i] = {};
         for (let j = Math.min(y1, y2); j <= Math.max(y1, y2); j++) {
             cave[i][j] = Entity.ROCK;
         }
@@ -41,9 +37,7 @@ function populateRange(lower, upper): void {
 for (let x = minX; x <= maxX; x++) {
     if (!cave[x]) cave[x] = {}
     for (let y = minY; y <= maxY; y++) {
-        if (!cave[x][y]) {
-            cave[x][y];
-        }
+        if (!cave[x][y]) cave[x][y];
     }
     cave[x][maxY + 2] = Entity.ROCK;
 }
@@ -55,17 +49,12 @@ function pour(): void {
 
     let y = 0
     for (y; y <= maxY; y++) {
-        if (cave[500][y]) {
-            y--; break;
-        }
+        if (cave[500][y]) y--; break;
     }
 
     if (y >= 0 && !cave[500][y]) {
         const landing = runoff(500, y);
-
-        if (landing !== null) {
-            cave[landing.x][landing.y] = Entity.SAND;
-        }
+        if (landing !== null) cave[landing.x][landing.y] = Entity.SAND;
     }
 }
 
@@ -74,26 +63,21 @@ function runoff(x: number, y: number): { x: number, y: number } | null {
         if (!cave[x][y + 1] && y + 1 <= maxY) {
             y += 1;
         } else if ((!cave[x - 1] || !cave[x - 1][y + 1]) && y + 1 < maxY) {
-            cave[x - 1] = cave[x - 1] ?? { [maxY]: Entity.ROCK }
-            minX = Math.min(minX, x - 1)
-            x -= 1
+            cave[x - 1] = cave[x - 1] ?? { [maxY]: Entity.ROCK };
+            minX = Math.min(minX, x - 1);
+            x -= 1;
             y += 1;
         } else if ((!cave[x + 1] || !cave[x + 1][y + 1]) && y + 1 < maxY) {
-            cave[x + 1] = cave[x + 1] ?? { [maxY]: Entity.ROCK }
-            maxX = Math.max(maxX, x + 1)
+            cave[x + 1] = cave[x + 1] ?? { [maxY]: Entity.ROCK };
+            maxX = Math.max(maxX, x + 1);
             x += 1
             y += 1;
-
         } else {
             break;
         }
     }
 
-    if (cave[x][y]) {
-        return null;
-    } else {
-        return { x, y }
-    }
+    return !cave[x][y] ? { x, y } : null;
 }
 
 function print(): void {
@@ -124,14 +108,12 @@ function write(str: string, color = '31'): void {
     process.stdout.write(`\x1b[${color}m${str}\x1b[0m`)
 }
 
-console.time('pour')
 let count = 0;
-console.log(cave[500]);
-
+console.time('pour')
 while (!cave[500][0]) {
     pour();
     count++;
 }
-console.log('Pours:', count);
 console.timeEnd('pour')
-print(); // 160ms
+console.log('Pours:', count);
+// print(); // 160ms
